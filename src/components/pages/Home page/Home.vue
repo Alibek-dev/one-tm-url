@@ -3,7 +3,8 @@
         <form action="">
             <h3>Новая записка</h3>
             <Textarea/>
-            <div class="params">
+
+            <div class="params" v-if="btnShowParams.showParameters">
                 <h3>Записка самоуничтожится</h3>
                 <v-row>
                     <v-col>
@@ -21,9 +22,14 @@
                     </v-col>
                 </v-row>
             </div>
+
             <div class="buttons">
                 <v-btn large color="#960000" class="btn-create">Создать записку</v-btn>
-                <v-btn large color="#D5D5D5" class="btn-params">Показать параметры</v-btn>
+                <v-btn
+                        large color="#D5D5D5"
+                        class="btn-params"
+                        @click="btnClickShowParams"
+                >{{ btnShowParams.showParameters ? 'Отключить параметры' : 'Показать параметры' }}</v-btn>
             </div>
         </form>
         <router-link to="/template">Пример</router-link>
@@ -38,10 +44,21 @@
             itemsWhenDestroyed: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
             model: 'После прочтения',
             checkbox: false,
+            btnShowParams: {
+                label: "Показать параметры",
+                showParameters: false,
+            },
         }),
         components: {
             Textarea
         },
+        methods: {
+            btnClickShowParams() {
+                this.btnShowParams.showParameters = !this.btnShowParams.showParameters
+                this.model = 'После прочтения'
+                this.checkbox = false
+            }
+        }
     }
 </script>
 
