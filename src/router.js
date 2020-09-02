@@ -13,6 +13,10 @@ export default new Router({
         {
             path: '/template',
             component: () => import('./components/pages/Test page/Template')
+        },
+        {
+            path: '*',
+            component: () => import('./components/pages/404')
         }
     ]
 })
