@@ -1,7 +1,5 @@
 <template>
     <form @submit.prevent="submitHandler">
-        <h3>Новая записка</h3>
-
         <v-textarea
                 label="Напишите ваш текст здесь..."
                 clearable
@@ -37,8 +35,7 @@
 
         <div class="buttons">
             <v-btn
-                    large
-                    color="#960000"
+                    large color="#960000"
                     class="btn-create"
                     type="submit"
             >Создать записку</v-btn>
@@ -55,7 +52,7 @@
     import {required} from 'vuelidate/lib/validators';
 
     export default {
-        name: "FormMessage",
+        name: "MessageForm",
         data: () => ({
             message: '',
             itemsWhenDestroyed: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
@@ -92,11 +89,6 @@
 </script>
 
 <style scoped>
-    h3 {
-        font-size: 26px;
-        margin: 10px 0 10px 0;
-    }
-
     .buttons {
         display: flex;
         justify-content: space-between;
@@ -111,10 +103,5 @@
     .btn-params {
         color: black;
         font-size: 14px;
-    }
-
-    .params-dest {
-        display: flex;
-
     }
 </style>
