@@ -11,12 +11,13 @@
                 @blur="$v.message.$touch()"
                 @input="$v.message.$touch()"
                 :error-messages="messageErrors"
+                :counter="MAX_LENGHT_MESSAGE"
         >
         </v-textarea>
 
         <div class="params" v-if="btnShowParams.showParameters">
             <h3>Записка самоуничтожится</h3>
-            <v-row>
+            <v-row class="mb-1">
                 <v-col>
                     <v-select
                             :items="itemsWhenDestroyed"
@@ -24,11 +25,41 @@
                             outlined
                     ></v-select>
                 </v-col>
-                <v-col>
+                <v-col
+                        align="center"
+                        justify="center"
+                >
                     <v-checkbox
                             v-model="checkbox"
                             label="Не спрашивать подтверждение перед тем, как показать и уничтожить записку."
                     ></v-checkbox>
+                </v-col>
+            </v-row>
+            <h3>Секретный пароль</h3>
+            <v-row>
+                <v-col>
+                    <v-text-field
+                            label="Введите пароль для дешифрования записки"
+                            type="password"
+                            outlined
+                            counter
+                            v-model="decryptionPassword"
+                            @blur="$v.decryptionPassword.$touch()"
+                            @input="$v.decryptionPassword.$touch()"
+                            :error-messages="decryptionPasswordErrors"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field
+                            label="Повторите пароль"
+                            type="password"
+                            outlined
+                            counter
+                            v-model="secondDecryptionPassword"
+                            @blur="$v.secondDecryptionPassword.$touch()"
+                            @input="$v.secondDecryptionPassword.$touch()"
+                            :error-messages="secondDecryptionPasswordErrors"
+                    ></v-text-field>
                 </v-col>
             </v-row>
         </div>
@@ -49,12 +80,15 @@
 </template>
 
 <script>
-    import {required} from 'vuelidate/lib/validators';
+    import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "MessageForm",
         data: () => ({
+            MAX_LENGHT_MESSAGE: 10000,
             message: '',
+            decryptionPassword: '',
+            secondDecryptionPassword: '',
             itemsWhenDestroyed: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
             model: 'После прочтения',
             checkbox: false,
@@ -64,17 +98,21 @@
             },
         }),
         validations: {
-            message: {required},
+            message: {required, maxLength: maxLength(10000)},
+            decryptionPassword: {required, minLength: minLength(6), maxLength: maxLength(30)},
+            secondDecryptionPassword: {required},
         },
         methods: {
             btnClickShowParams() {
                 this.btnShowParams.showParameters = !this.btnShowParams.showParameters
                 this.model = 'После прочтения'
                 this.checkbox = false
+                this.decryptionPassword = ''
+                this.secondDecryptionPassword = ''
             },
             submitHandler() {
                 this.$v.message.$touch()
-                this.messageErrors()
+                this.$v.secondDecryptionPassword.$touch()
             }
         },
         computed: {
@@ -82,6 +120,22 @@
                 const errors = []
                 if (!this.$v.message.$dirty) return errors
                 !this.$v.message.required && errors.push('Ошибка: текст записки пуст')
+                !this.$v.message.maxLength && errors.push('Ошибка: текст записки превышает ' + this.MAX_LENGHT_MESSAGE + ' символов')
+                return errors
+            },
+
+            decryptionPasswordErrors() {
+                const errors = []
+                if (!this.$v.decryptionPassword.$dirty) return errors
+                !this.$v.decryptionPassword.minLength && errors.push('Ошибка: Пароль должен быть больше 6 символов')
+                !this.$v.decryptionPassword.maxLength && errors.push('Ошибка: Пароль должен быть меньше 30 символов')
+                return errors
+            },
+
+            secondDecryptionPasswordErrors() {
+                const errors = []
+                if (!this.$v.secondDecryptionPassword.$dirty) return errors
+                this.secondDecryptionPassword !== this.decryptionPassword && errors.push('Ошибка: пароли не совпадают')
                 return errors
             }
         }

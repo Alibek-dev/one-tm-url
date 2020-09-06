@@ -13,7 +13,7 @@
 
 <style scoped>
     .header {
-        padding: 0 30% 0 30%;
+        padding: 0 25% 0 25%;
         margin: 0 0 50px 0;
         display: flex;
         justify-content: space-between;

@@ -32,7 +32,7 @@ export default {
   }
 
   .content {
-    padding: 0 30% 0 30%;
+    padding: 40px 25% 60px 25%;
     background-color: white;
     margin: 50px 0 10px 0;
   }
