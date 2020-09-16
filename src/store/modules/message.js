@@ -15,10 +15,26 @@ export default {
                 .catch((err) => {
                     console.error(err)
                 })
-        }
+        },
 
+        async deleteMessage(ctx, messageId) {
+            await axios.delete (
+                "http://localhost:5000/message-id/" + messageId
+            )
+                .then((res) => {
+                    console.log(res.data)
+                    ctx.commit('clearState')
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
     },
     mutations: {
+        clearState(state) {
+            state.message = {}
+        },
+
         updateMessage(state, message) {
             state.message = message
         }
@@ -29,6 +45,10 @@ export default {
     getters: {
         url(state) {
             return state.message.url
+        },
+
+        messageId(state) {
+            return state.message.messageId
         }
     },
 }

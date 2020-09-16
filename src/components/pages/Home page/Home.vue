@@ -44,6 +44,7 @@
                         class="btn-delete-url"
                         large
                         color="#F9D15F"
+                        @click="deleteMessage(messageId)"
                 >Удалить записку сейчас</v-btn>
             </div>
         </div>
@@ -53,6 +54,7 @@
 <script>
     import MessageForm from "./MessageForm";
     import Textarea from "../../shared/Textarea";
+    import {mapGetters, mapActions} from "vuex"
     export default {
         name: "Home",
         components: {
@@ -65,12 +67,12 @@
         }),
 
         computed: {
-            url() {
-                return this.$store.getters.url
-            }
+            ...mapGetters(['url', 'messageId'])
         },
 
         methods: {
+            ...mapActions(['deleteMessage']),
+
             goOverURL(hideForm) {
                 console.log(hideForm)
                 this.showCreatedURL = hideForm
