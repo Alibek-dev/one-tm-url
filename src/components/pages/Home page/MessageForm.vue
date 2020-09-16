@@ -20,8 +20,8 @@
             <v-row class="mb-1">
                 <v-col>
                     <v-select
-                            :items="itemsWhenDestroyed"
-                            v-model="model"
+                            :items="dropDownMenu.itemsWhenDestroyed"
+                            v-model="dropDownMenu.model"
                             outlined
                     ></v-select>
                 </v-col>
@@ -66,12 +66,14 @@
 
         <div class="buttons">
             <v-btn
-                    large color="#960000"
+                    large
+                    color="#960000"
                     class="btn-create"
                     type="submit"
             >Создать записку</v-btn>
             <v-btn
-                    large color="#D5D5D5"
+                    large
+                    color="#D5D5D5"
                     class="btn-params"
                     @click="btnClickShowParams"
             >{{ btnShowParams.showParameters ? 'Отключить параметры' : 'Показать параметры' }}</v-btn>
@@ -89,8 +91,10 @@
             message: '',
             decryptionPassword: '',
             secondDecryptionPassword: '',
-            itemsWhenDestroyed: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
-            model: 'После прочтения',
+            dropDownMenu: {
+                itemsWhenDestroyed: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
+                model: 'После прочтения',
+            },
             checkbox: false,
             btnShowParams: {
                 label: "Показать параметры",
@@ -105,7 +109,7 @@
         methods: {
             btnClickShowParams() {
                 this.btnShowParams.showParameters = !this.btnShowParams.showParameters
-                this.model = 'После прочтения'
+                this.dropDownMenu.model = 'После прочтения'
                 this.checkbox = false
                 this.decryptionPassword = ''
                 this.secondDecryptionPassword = ''
@@ -113,7 +117,8 @@
             submitHandler() {
                 this.$v.message.$touch()
                 this.$v.secondDecryptionPassword.$touch()
-            }
+
+            },
         },
         computed: {
             messageErrors() {
