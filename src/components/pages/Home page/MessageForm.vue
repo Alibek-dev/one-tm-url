@@ -83,6 +83,7 @@
 
 <script>
     import {required, minLength, maxLength} from 'vuelidate/lib/validators'
+    import {mapActions} from "vuex"
 
     export default {
         name: "MessageForm",
@@ -107,6 +108,8 @@
             secondDecryptionPassword: {required},
         },
         methods: {
+            ...mapActions(["sendMessage"]),
+
             btnClickShowParams() {
                 this.btnShowParams.showParameters = !this.btnShowParams.showParameters
                 this.dropDownMenu.model = 'После прочтения'
@@ -118,7 +121,17 @@
                 this.$v.message.$touch()
                 this.$v.secondDecryptionPassword.$touch()
 
+                if (this.messageErrors.length === 0) {
+                    this.sendMessage(this.sentData())
+                    this.$emit('go-over-URL', true)
+                }
             },
+            sentData() {
+                const messageObject = {
+                    message: this.message,
+                }
+                return messageObject
+            }
         },
         computed: {
             messageErrors() {

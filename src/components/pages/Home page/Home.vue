@@ -13,7 +13,9 @@
 
                 Нажав кнопку "параметры", вы можете указать пароль для дешифрования записки и установить срок её действия.
             </p>
-            <MessageForm/>
+            <MessageForm
+                v-on:go-over-URL="goOverURL"
+            />
             <router-link to="/template">Пример</router-link>
         </div>
 
@@ -33,6 +35,9 @@
                     readonly
                     background-color=#FFFACE
                     color="black"
+                    :value="url"
+                    @focus="$event.target.select()"
+
             ></v-text-field>
             <div align="right">
                 <v-btn
@@ -56,8 +61,21 @@
         },
         data: () => ({
             showDiscription: false,
-            showCreatedURL: true,
+            showCreatedURL: false,
         }),
+
+        computed: {
+            url() {
+                return this.$store.getters.url
+            }
+        },
+
+        methods: {
+            goOverURL(hideForm) {
+                console.log(hideForm)
+                this.showCreatedURL = hideForm
+            }
+        }
     }
 </script>
 
