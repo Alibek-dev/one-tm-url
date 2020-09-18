@@ -78,12 +78,17 @@
                     @click="btnClickShowParams"
             >{{ btnShowParams.showParameters ? 'Отключить параметры' : 'Показать параметры' }}</v-btn>
         </div>
+        <v-snackbar
+                v-model="snackbar.active"
+                :timeout="3000"
+                :color="snackbar.color"
+        >{{ snackbar.message }}</v-snackbar>
     </form>
 </template>
 
 <script>
     import {required, minLength, maxLength} from 'vuelidate/lib/validators'
-    import {mapActions} from "vuex"
+    import {mapActions, mapGetters} from "vuex"
 
     export default {
         name: "MessageForm",
@@ -101,6 +106,13 @@
                 label: "Показать параметры",
                 showParameters: false,
             },
+
+            snackbar: {
+                active: false,
+                color: '',
+                message: '',
+            },
+
         }),
         validations: {
             message: {required, maxLength: maxLength(10000)},
@@ -108,8 +120,6 @@
             secondDecryptionPassword: {required},
         },
         methods: {
-            ...mapActions(["sendMessage"]),
-
             btnClickShowParams() {
                 this.btnShowParams.showParameters = !this.btnShowParams.showParameters
                 this.dropDownMenu.model = 'После прочтения'
@@ -121,11 +131,21 @@
                 this.$v.message.$touch()
                 this.$v.secondDecryptionPassword.$touch()
 
-                if (this.messageErrors.length === 0) {
-                    this.sendMessage(this.sentData())
+                this.createMessage()
+            },
+
+            async createMessage() {
+                let result = await this.sendMessage(this.sentData())
+
+                if (result.success) {
                     this.$emit('go-over-URL', true)
+                } else {
+                    this.snackbar.active = true
+                    this.snackbar.color = 'error'
+                    this.snackbar.message = result.errorMessage
                 }
             },
+
             sentData() {
                 const messageObject = {
                     message: this.message,
@@ -134,6 +154,8 @@
             }
         },
         computed: {
+            ...mapGetters(['getStatus']),
+
             messageErrors() {
                 const errors = []
                 if (!this.$v.message.$dirty) return errors

@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <h1>Private message application</h1>
+        <a href="/" ><h1>Private message application</h1></a>
         <div>Посылайте сообщения, которые будут <br> самоуничтожены после прочтения</div>
     </div>
 </template>
@@ -12,6 +12,15 @@
 </script>
 
 <style scoped>
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: white;
+        border-bottom: 4px solid white;
+    }
+
     .header {
         padding: 0 25% 0 25%;
         margin: 0 0 50px 0;
