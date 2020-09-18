@@ -1,11 +1,12 @@
 <template>
     <div>
         <v-textarea
+                id="text"
                 label="Напишите ваш текст здесь..."
                 outlined
                 background-color=#FFFACE
                 color="black"
-                value="asdfasf"
+                :value="text"
                 readonly
                 auto-grow
         ></v-textarea>
@@ -14,7 +15,8 @@
 
 <script>
     export default {
-        name: "Textarea"
+        name: "Textarea",
+        props: ['text']
     }
 </script>
 

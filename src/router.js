@@ -8,11 +8,15 @@ export default new Router({
     routes: [
         {
             path: '/home',
-            component: () => import('./components/pages/Home page/Home'),
+            component: () => import('./components/pages/Home page/HomePage'),
         },
         {
             path: '/template',
             component: () => import('./components/pages/Test page/Template')
+        },
+        {
+            path: '/message/:id',
+            component: () => import('./components/pages/Read message page/ReadMessagePage')
         },
         {
             path: '*',

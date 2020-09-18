@@ -16,7 +16,6 @@ export default {
 
             } catch (err) {
                 console.error(err)
-                console.log(err.response)
                 return {
                     success: false,
                 }
@@ -38,6 +37,24 @@ export default {
                 return {
                     success: false,
                     responseMessage: err.response.data
+                }
+            }
+        },
+
+        async getMessage(ctx, messageId) {
+            try {
+                let res = await axios.get (
+                    "http://localhost:5000/message-id/" + messageId
+                )
+                const message = res.data
+                ctx.commit('updateMessage', message)
+                return {
+                    success: true
+                }
+            } catch (err) {
+                console.error(err)
+                return {
+                    success: false
                 }
             }
         }
@@ -65,6 +82,10 @@ export default {
 
         getStatus(state) {
             return state.message.status
+        },
+
+        getMessage(state) {
+            return state.message
         }
     },
 }
