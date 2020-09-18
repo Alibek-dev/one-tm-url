@@ -88,7 +88,7 @@
 
 <script>
     import {required, minLength, maxLength} from 'vuelidate/lib/validators'
-    import {mapActions, mapGetters} from "vuex"
+    import {mapGetters} from "vuex"
 
     export default {
         name: "MessageForm",
@@ -135,14 +135,14 @@
             },
 
             async createMessage() {
-                let result = await this.sendMessage(this.sentData())
+                let result = await this.$store.dispatch('sendMessage', this.sentData())
 
                 if (result.success) {
                     this.$emit('go-over-URL', true)
                 } else {
                     this.snackbar.active = true
                     this.snackbar.color = 'error'
-                    this.snackbar.message = result.errorMessage
+                    this.snackbar.message = 'Не удалось соединиться с сервером'
                 }
             },
 

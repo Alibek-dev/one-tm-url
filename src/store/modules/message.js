@@ -19,7 +19,6 @@ export default {
                 console.log(err.response)
                 return {
                     success: false,
-                    errorMessage: 'Не удалось соединиться с сервером'
                 }
             }
         },
