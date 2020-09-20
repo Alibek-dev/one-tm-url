@@ -20,7 +20,7 @@
             <v-row class="mb-1">
                 <v-col>
                     <v-select
-                            :items="dropDownMenu.itemsWhenDestroyed"
+                            :items="dropDownMenu.dueDateItems"
                             v-model="dropDownMenu.model"
                             outlined
                     ></v-select>
@@ -30,7 +30,7 @@
                         justify="center"
                 >
                     <v-checkbox
-                            v-model="checkbox"
+                            v-model="notAskConfirmation"
                             label="Не спрашивать подтверждение перед тем, как показать и уничтожить записку."
                     ></v-checkbox>
                 </v-col>
@@ -98,10 +98,10 @@
             decryptionPassword: '',
             secondDecryptionPassword: '',
             dropDownMenu: {
-                itemsWhenDestroyed: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
+                dueDateItems: ['После прочтения', 'Спустя 1 час', 'Спустя 24 часа', 'Спустя 7 дней', 'Спустя 30 дней'],
                 model: 'После прочтения',
             },
-            checkbox: false,
+            notAskConfirmation: false,
             btnShowParams: {
                 label: "Показать параметры",
                 showParameters: false,
@@ -123,7 +123,7 @@
             btnClickShowParams() {
                 this.btnShowParams.showParameters = !this.btnShowParams.showParameters
                 this.dropDownMenu.model = 'После прочтения'
-                this.checkbox = false
+                this.notAskConfirmation = false
                 this.decryptionPassword = ''
                 this.secondDecryptionPassword = ''
             },
@@ -131,11 +131,19 @@
                 this.$v.message.$touch()
                 this.$v.secondDecryptionPassword.$touch()
 
-                this.createMessage()
+                if (this.messageErrors.length === 0) {
+                    this.createMessage()
+                } else {
+                    this.snackbar = {
+                        active: true,
+                        color: 'error',
+                        message: 'Текст записки пуст'
+                    }
+                }
             },
 
             async createMessage() {
-                let result = await this.$store.dispatch('sendMessage', this.sentData())
+                let result = await this.$store.dispatch('sendMessage', this.sendData())
 
                 if (result.success) {
                     this.$emit('go-over-URL', true)
@@ -146,11 +154,40 @@
                 }
             },
 
-            sentData() {
-                const messageObject = {
+            sendData() {
+                let messageObject = {
                     message: this.message,
+                    notAskConfirmation: this.notAskConfirmation,
+                    dateToDeleteMessage: this.whenDeleteMessage()
                 }
+                if (!this.decryptionPasswordErrors.length && !this.secondDecryptionPasswordErrors.length) {
+                    messageObject.password = this.secondDecryptionPassword
+                } else {
+                    messageObject.password = ''
+                }
+                console.log(messageObject)
                 return messageObject
+            },
+
+            whenDeleteMessage() {
+                let dueDate = new Date()
+                switch (this.dropDownMenu.model) {
+                    case 'После прочтения':
+                        return ''
+                    case 'Спустя 1 час':
+                        dueDate.setHours(dueDate.getHours() + 1)
+                        break
+                    case 'Спустя 24 часа':
+                        dueDate.setDate(dueDate.getDate() + 1)
+                        break
+                    case 'Спустя 7 дней':
+                        dueDate.setDate(dueDate.getDate() + 7)
+                        break
+                    case 'Спустя 30 дней':
+                        dueDate.setDate(dueDate.getDate() + 30)
+                        break
+                }
+                return new Date(dueDate).toISOString()
             }
         },
         computed: {

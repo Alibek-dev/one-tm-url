@@ -15,7 +15,7 @@ export default new Router({
             component: () => import('./components/pages/Test page/Template')
         },
         {
-            path: '/message/:id',
+            path: '/home/:id',
             component: () => import('./components/pages/Read message page/ReadMessagePage')
         },
         {

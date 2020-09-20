@@ -34,7 +34,7 @@ export default {
   .content {
     padding: 40px 25% 60px 25%;
     background-color: white;
-    margin: 50px 0 10px 0;
+    margin: 0 0 10px 0;
   }
 
 

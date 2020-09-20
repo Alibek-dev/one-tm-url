@@ -73,7 +73,7 @@ export default {
     },
     getters: {
         url(state) {
-            return state.message.url
+            return window.location.href + '/' + state.message.messageId
         },
 
         messageId(state) {
@@ -86,6 +86,14 @@ export default {
 
         getMessage(state) {
             return state.message
+        },
+
+        getExpired(state) {
+            return state.message.expired
+        },
+
+        getNotAskConfirmation(state) {
+            return state.message.notAskConfirmation
         }
     },
 }
