@@ -7,7 +7,6 @@
         <h3 v-else-if="getExpired">Срок записки истёк</h3>
 
         <div v-else>
-
             <div v-if="showConfirmation">
                 <h3>Прочитать и уничтожить?</h3>
                 <p>Вы собираетесь прочитать и уничтожить записку <i>"{{ messageId }}"</i></p>
@@ -29,10 +28,26 @@
                     </v-col>
                 </v-row>
             </div>
+            <div v-else-if="!passwordSuccess && !isEmpty(message)">
+                <h3>Содержание записки</h3>
+                <p class="confirm">Не закрывайте и не перезагружайте эту страницу, иначе вы потеряете записку навсегда </p>
+                <h3>Секретный пароль</h3>
+                <v-text-field
+                        label="Введите пароль для прочтения этой записки "
+                        type="password"
+                        outlined
+                        v-model="password"
+                ></v-text-field>
+                <v-btn
+                        large
+                        color="#960000"
+                        class="btn-ok"
+                        @click="checkPassword()"
+                >Продолжить</v-btn>
+            </div>
             <div v-else>
                 <div v-if="!isEmpty(message)">
-                    <h3>Содержание записки</h3>
-                    <p id="confirm">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
+                    <p class="confirm">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
                     <Textarea
                             :text="message.message"
                     ></Textarea>
@@ -45,7 +60,6 @@
                 </div>
                 <h3 v-else>Записка не найдена</h3>
             </div>
-
 
         </div>
         <v-snackbar
@@ -72,14 +86,15 @@
             loading: true,
             message: {},
             messageId: '',
-
             snackbar: {
                 active: false,
                 color: '',
                 message: '',
             },
-
+            passwordSuccess: false,
             showConfirmation: false,
+            password: '',
+            truePassword: '',
         }),
 
         mounted() {
@@ -87,6 +102,9 @@
             const id = path[path.length - 1]
             this.messageId = id
             this.loadData(id)
+
+
+            this.deleteURL(this.messageId)
         },
 
         methods: {
@@ -96,7 +114,11 @@
                     this.showConfirmation = !this.getNotAskConfirmation
                     this.message = this.getMessage
                     this.loading = false
-                    this.deleteURL(id)
+                    this.truePassword = this.getPassword
+                    if (this.truePassword === "" || this.truePassword === undefined) {
+
+                        this.passwordSuccess = true
+                    }
                 } else {
                     this.loading = false
                 }
@@ -119,13 +141,23 @@
                 document.execCommand('copy')
 
                 this.snackbar.active = true
-                this.snackbar.message = 'Текст успешно скопировано'
+                this.snackbar.message = 'Текст успешно скопирован'
                 this.snackbar.color = 'success'
             },
+
+            checkPassword() {
+                if (this.password === this.truePassword) {
+                    this.passwordSuccess = true
+                } else {
+                    this.snackbar.active = true
+                    this.snackbar.message = 'Пароль введён неверно'
+                    this.snackbar.color = 'error'
+                }
+            }
         },
 
         computed: {
-            ...mapGetters(['getMessage', 'getExpired', 'getNotAskConfirmation'])
+            ...mapGetters(['getMessage', 'getExpired', 'getNotAskConfirmation', 'getPassword'])
         }
     }
 </script>
@@ -147,9 +179,11 @@
     .btn-ok, .btn-cancel {
         width: 100%;
     }
-    #confirm {
-        padding: 5px;
+    .confirm {
+        font-size: 14px;
+        padding: 7px;
         background-color: #F9D15F;
+        border-radius: 6px;
     }
 
 </style>

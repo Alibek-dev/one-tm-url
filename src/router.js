@@ -7,7 +7,7 @@ export default new Router({
     mode: 'history',
     routes: [
         {
-            path: '/home',
+            path: '/',
             component: () => import('./components/pages/Home page/HomePage'),
         },
         {
@@ -15,7 +15,7 @@ export default new Router({
             component: () => import('./components/pages/Test page/Template')
         },
         {
-            path: '/home/:id',
+            path: '/:id',
             component: () => import('./components/pages/Read message page/ReadMessagePage')
         },
         {

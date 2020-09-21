@@ -73,7 +73,7 @@ export default {
     },
     getters: {
         url(state) {
-            return window.location.href + '/' + state.message.messageId
+            return window.location.href + state.message.messageId
         },
 
         messageId(state) {
@@ -94,6 +94,10 @@ export default {
 
         getNotAskConfirmation(state) {
             return state.message.notAskConfirmation
+        },
+
+        getPassword(state) {
+            return state.message.password
         }
     },
 }

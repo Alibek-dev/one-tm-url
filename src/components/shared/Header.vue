@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <a href="/home" ><h1>Private message application</h1></a>
+        <a href="/" ><h1>Private message application</h1></a>
         <div>Посылайте сообщения, которые будут <br> самоуничтожены после прочтения</div>
     </div>
 </template>

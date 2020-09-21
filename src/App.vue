@@ -15,7 +15,6 @@ import Header from '@/components/shared/Header'
 
 export default {
   name: 'App',
-
   components: {
     Header,
   },
@@ -36,6 +35,4 @@ export default {
     background-color: white;
     margin: 0 0 10px 0;
   }
-
-
 </style>

@@ -165,7 +165,6 @@
                 } else {
                     messageObject.password = ''
                 }
-                console.log(messageObject)
                 return messageObject
             },
 

@@ -2,7 +2,7 @@
     <div>
         <v-textarea
                 id="text"
-                label="Напишите ваш текст здесь..."
+                label="Текст записки"
                 outlined
                 background-color=#FFFACE
                 color="black"

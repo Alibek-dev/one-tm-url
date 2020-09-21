@@ -37,11 +37,10 @@
                     color="black"
                     :value="url"
                     @focus="$event.target.select()"
-
             ></v-text-field>
             <div class="buttons">
                 <v-btn
-                        class="btn-copy-url"
+                        class="btn-copy"
                         large
                         color="#F1F1F1"
                         @click="copyURL"
@@ -53,6 +52,28 @@
                         @click="confirmStatement"
                 >Удалить записку сейчас</v-btn>
             </div>
+            <div v-if="getPassword">
+                <hr class="my-10">
+                <h3>Секретный пароль</h3>
+                <p>Необходим пароль для прочтения этой записки</p>
+                <v-text-field
+                        id="password"
+                        outlined
+                        readonly
+                        :value="getPassword"
+                        :type="showPassword ? 'text' : 'password'"
+                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                        @click:append="showPassword = !showPassword"
+                ></v-text-field>
+                <v-btn
+                        v-if="showPassword"
+                        class="btn-copy"
+                        large
+                        color="#F1F1F1"
+                        @click="copyPassword"
+                >Скопировать пароль</v-btn>
+            </div>
+
         </div>
 
         <OpenDialog
@@ -84,21 +105,20 @@
         data: () => ({
             showDiscription: false,
             showCreatedURL: false,
-
             snackbar: {
                 active: false,
                 color: '',
                 message: '',
             },
-
             openDialog: {
                 active: false,
                 question: '',
-            }
+            },
+            showPassword: false,
         }),
 
         computed: {
-            ...mapGetters(['url', 'messageId'])
+            ...mapGetters(['url', 'messageId', 'getPassword'])
         },
 
         methods: {
@@ -113,6 +133,16 @@
 
                 this.snackbar.active = true
                 this.snackbar.message = 'Ссылка успешно скопировано'
+                this.snackbar.color = 'success'
+            },
+
+            copyPassword() {
+                let copyText = document.getElementById('password')
+                copyText.select()
+                document.execCommand('copy')
+
+                this.snackbar.active = true
+                this.snackbar.message = 'Пароль успешно скопирован'
                 this.snackbar.color = 'success'
             },
 
@@ -164,7 +194,7 @@
         padding: 10px;
     }
 
-    .btn-delete-url, .btn-copy-url {
+    .btn-delete-url, .btn-copy {
         color: black;
         font-size: 12px;
     }
