@@ -4,8 +4,9 @@ export default {
     actions: {
         async sendMessage(ctx, noteObject) {
             try {
+                console.log(noteObject)
                 let res = await axios.post (
-                    "http://localhost:5000/message",
+                    "http://188.120.245.27:8081/message",
                     noteObject,
                 )
                 const message = res.data
@@ -25,7 +26,7 @@ export default {
         async deleteMessage(ctx, messageId) {
             try {
                 let res = await axios.delete (
-                    "http://localhost:5000/message-id/" + messageId
+                    "http://188.120.245.27:8081/message-id/" + messageId
                 )
                 ctx.commit('clearState')
                 return {
@@ -44,12 +45,19 @@ export default {
         async getMessage(ctx, messageId) {
             try {
                 let res = await axios.get (
-                    "http://localhost:5000/message-id/" + messageId
+                    "http://188.120.245.27:8081/message-id/" + messageId
                 )
                 const message = res.data
+                console.log(message)
                 ctx.commit('updateMessage', message)
-                return {
-                    success: true
+                if (message.status === 200) {
+                    return {
+                        success: true
+                    }
+                } else {
+                    return {
+                        success: false
+                    }
                 }
             } catch (err) {
                 console.error(err)
@@ -73,7 +81,8 @@ export default {
     },
     getters: {
         url(state) {
-            return window.location.href + state.message.messageId
+            console.log(window.location.origin)
+            return window.location.origin + '/privmess/' + state.message.messageId
         },
 
         messageId(state) {
@@ -85,7 +94,7 @@ export default {
         },
 
         getMessage(state) {
-            return state.message
+            return state.message.text
         },
 
         getExpired(state) {

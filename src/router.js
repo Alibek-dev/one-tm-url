@@ -7,20 +7,12 @@ export default new Router({
     mode: 'history',
     routes: [
         {
-            path: '/',
+            path: '/privmess',
             component: () => import('./components/pages/Home page/HomePage'),
         },
         {
-            path: '/template',
-            component: () => import('./components/pages/Test page/Template')
-        },
-        {
-            path: '/:id',
+            path: '/privmess/:id',
             component: () => import('./components/pages/Read message page/ReadMessagePage')
         },
-        {
-            path: '*',
-            component: () => import('./components/pages/404')
-        }
     ]
 })

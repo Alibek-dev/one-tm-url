@@ -49,7 +49,7 @@
                 <div v-if="!isEmpty(message)">
                     <p class="confirm">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
                     <Textarea
-                            :text="message.message"
+                            :text="message"
                     ></Textarea>
                     <v-btn
                             class="btn-copy-url"
@@ -116,7 +116,6 @@
                     this.loading = false
                     this.truePassword = this.getPassword
                     if (this.truePassword === "" || this.truePassword === undefined) {
-
                         this.passwordSuccess = true
                     }
                 } else {
