@@ -116,7 +116,7 @@
         }),
         validations: {
             message: {required, maxLength: maxLength(10000)},
-            decryptionPassword: {required, minLength: minLength(6), maxLength: maxLength(30)},
+            decryptionPassword: {required, minLength: minLength(3), maxLength: maxLength(30)},
             secondDecryptionPassword: {required},
         },
         methods: {
@@ -131,13 +131,13 @@
                 this.$v.message.$touch()
                 this.$v.secondDecryptionPassword.$touch()
 
-                if (this.messageErrors.length === 0) {
+                if ([...this.messageErrors, ...this.decryptionPasswordErrors, ...this.secondDecryptionPasswordErrors].length === 0) { // this.messageErrors.length === 0
                     this.createMessage()
                 } else {
                     this.snackbar = {
                         active: true,
                         color: 'error',
-                        message: 'Текст записки пуст'
+                        message: 'Форма не валидна'
                     }
                 }
             },
@@ -203,7 +203,7 @@
             decryptionPasswordErrors() {
                 const errors = []
                 if (!this.$v.decryptionPassword.$dirty) return errors
-                !this.$v.decryptionPassword.minLength && errors.push('Ошибка: Пароль должен быть больше 6 символов')
+                !this.$v.decryptionPassword.minLength && errors.push('Ошибка: Пароль должен быть больше 3 символов')
                 !this.$v.decryptionPassword.maxLength && errors.push('Ошибка: Пароль должен быть меньше 30 символов')
                 return errors
             },

@@ -4,7 +4,6 @@ export default {
     actions: {
         async sendMessage(ctx, noteObject) {
             try {
-                console.log(noteObject)
                 let res = await axios.post (
                     "http://188.120.245.27:8081/message",
                     noteObject,
@@ -81,8 +80,11 @@ export default {
     },
     getters: {
         url(state) {
-            console.log(window.location.origin)
             return window.location.origin + '/privmess/' + state.message.messageId
+        },
+
+        getDueDate(state) {
+            return state.message.dueDate
         },
 
         messageId(state) {

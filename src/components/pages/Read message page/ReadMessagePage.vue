@@ -9,7 +9,8 @@
         <div v-else>
             <div v-if="showConfirmation">
                 <h3>Прочитать и уничтожить?</h3>
-                <p>Вы собираетесь прочитать и уничтожить записку <i>"{{ messageId }}"</i></p>
+                <p v-if="$store.getters.getDueDate === ''">Вы собираетесь прочитать и уничтожить записку <i>"{{ messageId }}"</i></p>
+                <p v-else>Вы собираетесь прочитать записку<i>"{{ messageId }}"</i>, эта записка будет уничтожена <strong>{{ dueDate }}</strong></p>
                 <v-row justify="center" align="center">
                     <v-col>
                         <v-btn
@@ -47,7 +48,8 @@
             </div>
             <div v-else>
                 <div v-if="!isEmpty(message)">
-                    <p class="confirm">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
+                    <p v-if="$store.getters.getDueDate === ''" class="confirm">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
+                    <p v-else class="confirm">Эта записка будет уничтожена <strong>{{ dueDate }}</strong></p>
                     <Textarea
                             :text="message"
                     ></Textarea>
@@ -75,6 +77,7 @@
     import Textarea from '../../shared/Textarea'
     import Loader from '../../shared/Loader'
     import {mapGetters} from "vuex"
+    import dateFilter from "@/filters/date.filter";
     export default {
         name: "ReadMessagePage",
         components: {
@@ -104,7 +107,9 @@
             this.loadData(id)
 
 
-            this.deleteURL(this.messageId)
+            if (this.$store.getters.getDueDate === '') {
+                this.deleteURL(this.messageId)
+            }
         },
 
         methods: {
@@ -156,7 +161,12 @@
         },
 
         computed: {
-            ...mapGetters(['getMessage', 'getExpired', 'getNotAskConfirmation', 'getPassword'])
+            ...mapGetters(['getMessage', 'getExpired', 'getNotAskConfirmation', 'getPassword']),
+
+            dueDate() {
+                const date = new Date(this.$store.getters.getDueDate)
+                return dateFilter(date, 'datetime')
+            }
         }
     }
 </script>

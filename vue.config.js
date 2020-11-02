@@ -5,4 +5,13 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
       ? '/privmess'
       : '/privmess',
+
+  chainWebpack: config => {
+    config
+        .plugin('html')
+        .tap(args => {
+          args[0].title = "Hide message";
+          return args;
+        })
+  }
 }

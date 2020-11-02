@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <a href="/privmess" ><h1>Private message application</h1></a>
+        <a href="/privmess" ><h1>Hide message</h1></a>
         <div>Посылайте сообщения, которые будут <br> самоуничтожены после прочтения</div>
     </div>
 </template>
