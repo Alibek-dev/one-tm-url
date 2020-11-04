@@ -1,7 +1,9 @@
 <template>
-    <div class="header">
-        <a href="/privmess" ><h1>Hide message</h1></a>
-        <div>Посылайте сообщения, которые будут <br> самоуничтожены после прочтения</div>
+    <div class="container-fluid header">
+        <div class="row justify-center text-center">
+            <div class="col-md-6 col-xl-6 my-2"><a href="/" ><h1>Hide message</h1></a></div>
+            <div class="col-md-6 col-xl-6 my-2"><div>Посылайте сообщения, которые будут <br> самоуничтожены после прочтения</div></div>
+        </div>
     </div>
 </template>
 
@@ -22,13 +24,10 @@
     }
 
     .header {
-        padding: 0 25% 0 25%;
-        margin: 0 0 30px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         width: 100%;
-        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         background-color: #960000;
     }
 

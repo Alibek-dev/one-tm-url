@@ -2,9 +2,9 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  publicPath: process.env.NODE_ENV === 'production'
-      ? '/privmess'
-      : '/privmess',
+  /*publicPath: process.env.NODE_ENV === 'production'
+      ? '/'
+      : '/privmess',*/
 
   chainWebpack: config => {
     config

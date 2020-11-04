@@ -1,52 +1,67 @@
 <template>
-    <div>
-        <div v-if="!showCreatedURL">
-            <div class="wrap">
-                <h3>Новая записка</h3>
-                <v-btn small color="#E5E5E5" class="btn-discription" @click="showDiscription = !showDiscription">?</v-btn>
-            </div>
-            <p v-if="showDiscription">
-                С помощью Private message appliction вы можете посылать записки, которые самоуничтожаются после того, как их прочитают.<br>
-                1. Напишите записку ниже, зашифруйте её и получите ссылку.<br>
-                2. Отправьте ссылку тому, кто должен прочесть записку.<br>
-                3. Записка самоуничтожится после того, как её прочитают.<br><br>
+    <div class="container-fluid">
+        <div v-if="!showCreatedURL" class="row">
+            <div class="col">
+                <div class="row justify-space-between align-center">
+                    <h3>Новая записка</h3>
+                    <v-btn small color="#E5E5E5" class="btn-discription" @click="showDiscription = !showDiscription">?</v-btn>
+                </div>
+                <div class="row">
+                    <p v-if="showDiscription">
+                        С помощью Hide message вы можете посылать записки, которые самоуничтожаются после того, как их прочитают.<br>
+                        1. Напишите записку ниже, зашифруйте её и получите ссылку.<br>
+                        2. Отправьте ссылку тому, кто должен прочесть записку.<br>
+                        3. Записка самоуничтожится после того, как её прочитают.<br><br>
 
-                Нажав кнопку "параметры", вы можете указать пароль для дешифрования записки и установить срок её действия.
-            </p>
-            <MessageForm
-                v-on:go-over-URL="goOverURL"
-            />
+                        Нажав кнопку "параметры", вы можете указать пароль для дешифрования записки и установить срок её действия.
+                    </p>
+                </div>
+                <div class="row">
+                    <MessageForm
+                        class="w-100"
+                        v-on:go-over-URL="goOverURL"
+                    />
+                </div>
+
+            </div>
+
         </div>
 
 
         <div v-else>
-            <div class="wrap">
-                <h3>Ссылка на зписку готова</h3>
+            <div class="row justify-space-between align-center">
+                <h3 class="">Ссылка на записку готова</h3>
                 <v-btn small color="#E5E5E5" class="btn-discription" @click="showDiscription = !showDiscription">?</v-btn>
             </div>
             <p v-if="showDiscription">
                 Отправьте эту ссылку тому, кто должен её прочесть.
             </p>
 
-            <v-text-field
-                    id="url"
-                    label="Записка самоуничтожится после прочтения"
-                    outlined
-                    readonly
-                    background-color=#FFFACE
-                    color="black"
-                    :value="url"
-                    @focus="$event.target.select()"
-            ></v-text-field>
-            <div class="buttons">
+            <div class="row">
+                <div class="col">
+                    <v-text-field
+                        id="url"
+                        label="Записка самоуничтожится после прочтения"
+                        outlined
+                        readonly
+                        background-color=#FFFACE
+                        color="black"
+                        :value="url"
+                        @focus="$event.target.select()"
+                    ></v-text-field>
+                </div>
+            </div>
+
+
+            <div class="buttons row">
                 <v-btn
-                        class="btn-copy"
+                        class="btn-copy col-md-4 col-xl-4 my-2"
                         large
                         color="#F1F1F1"
                         @click="copyURL"
                 >Скопировать ссылку</v-btn>
                 <v-btn
-                        class="btn-delete-url"
+                        class="btn-delete-url col-md-4 col-xl-4 my-2"
                         large
                         color="#F9D15F"
                         @click="confirmStatement"
@@ -67,7 +82,7 @@
                 ></v-text-field>
                 <v-btn
                         v-if="showPassword"
-                        class="btn-copy"
+                        class="btn-copy col-md-4 col-xl-4 my-2"
                         large
                         color="#F1F1F1"
                         @click="copyPassword"

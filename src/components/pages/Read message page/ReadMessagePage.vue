@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <Loader
                 v-if="loading"
         />
@@ -9,25 +9,25 @@
         <div v-else>
             <div v-if="showConfirmation">
                 <h3>Прочитать и уничтожить?</h3>
-                <p v-if="$store.getters.getDueDate === ''">Вы собираетесь прочитать и уничтожить записку <i>"{{ messageId }}"</i></p>
+                <p v-if="!$store.getters.getDueDate">Вы собираетесь прочитать и уничтожить записку <i>"{{ messageId }}"</i></p>
                 <p v-else>Вы собираетесь прочитать записку<i>"{{ messageId }}"</i>, эта записка будет уничтожена <strong>{{ dueDate }}</strong></p>
-                <v-row justify="center" align="center">
-                    <v-col>
+                <div class="row justify-center align-center">
+                    <div class="col-md-6 col-xl-6 my-2">
                         <v-btn
                                 large
                                 color="#960000"
                                 class="btn-ok"
                                 @click="showConfirmation = false"
                         >Да, покажите мне записку</v-btn>
-                    </v-col>
-                    <v-col>
+                    </div>
+                    <div class="col-md-6 col-xl-6 my-2">
                         <v-btn
                                 large
                                 color="#D5D5D5"
                                 class="btn-cancel"
                         >Нет, не сейчас</v-btn>
-                    </v-col>
-                </v-row>
+                    </div>
+                </div>
             </div>
             <div v-else-if="!passwordSuccess && !isEmpty(message)">
                 <h3>Содержание записки</h3>
@@ -48,17 +48,21 @@
             </div>
             <div v-else>
                 <div v-if="!isEmpty(message)">
-                    <p v-if="$store.getters.getDueDate === ''" class="confirm">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
-                    <p v-else class="confirm">Эта записка будет уничтожена <strong>{{ dueDate }}</strong></p>
+                    <p v-if="!$store.getters.getDueDate" class="confirm row">Эта записка удалена. Если вам нужно сохранить текст, скопируйте его перед закрытием этого окна. </p>
+                    <p v-else class="confirm row">Эта записка будет уничтожена <strong>{{ dueDate }}</strong></p>
                     <Textarea
-                            :text="message"
+                        class="row"
+                        :text="message"
                     ></Textarea>
-                    <v-btn
-                            class="btn-copy-url"
+                    <div class="row">
+                        <v-btn
+                            class="btn-copy-url col-md-4 col-xl-4 my-2"
                             large
                             color="#F1F1F1"
                             @click="copyText"
-                    >Скопировать текст записки</v-btn>
+                        >Скопировать текст записки</v-btn>
+                    </div>
+
                 </div>
                 <h3 v-else>Записка не найдена</h3>
             </div>
@@ -100,15 +104,14 @@
             truePassword: '',
         }),
 
-        mounted() {
+        async mounted() {
             let path = location.pathname.split('/')
             const id = path[path.length - 1]
             this.messageId = id
-            this.loadData(id)
+            await this.loadData(id)
 
-
-            if (this.$store.getters.getDueDate === '') {
-                this.deleteURL(this.messageId)
+            if (!this.$store.getters.getDueDate) {
+                await this.deleteURL(this.messageId)
             }
         },
 

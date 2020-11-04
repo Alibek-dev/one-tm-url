@@ -5,7 +5,7 @@ export default {
         async sendMessage(ctx, noteObject) {
             try {
                 let res = await axios.post (
-                    "http://188.120.245.27:8081/message",
+                    "https://api.hide.kz/message",
                     noteObject,
                 )
                 const message = res.data
@@ -25,7 +25,7 @@ export default {
         async deleteMessage(ctx, messageId) {
             try {
                 let res = await axios.delete (
-                    "http://188.120.245.27:8081/message-id/" + messageId
+                    "https://api.hide.kz/message-id/" + messageId
                 )
                 ctx.commit('clearState')
                 return {
@@ -44,7 +44,7 @@ export default {
         async getMessage(ctx, messageId) {
             try {
                 let res = await axios.get (
-                    "http://188.120.245.27:8081/message-id/" + messageId
+                    "https://api.hide.kz/message-id/" + messageId
                 )
                 const message = res.data
                 console.log(message)
@@ -80,7 +80,7 @@ export default {
     },
     getters: {
         url(state) {
-            return window.location.origin + '/privmess/' + state.message.messageId
+            return window.location.origin + '/' + state.message.messageId
         },
 
         getDueDate(state) {

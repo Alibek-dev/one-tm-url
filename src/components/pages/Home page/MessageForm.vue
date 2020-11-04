@@ -1,6 +1,7 @@
 <template>
-    <form @submit.prevent="submitHandler">
-        <v-textarea
+    <form @submit.prevent="submitHandler" class="container-fluid">
+        <div class="row">
+            <v-textarea
                 label="Напишите ваш текст здесь..."
                 clearable
                 outlined
@@ -12,33 +13,32 @@
                 @input="$v.message.$touch()"
                 :error-messages="messageErrors"
                 :counter="MAX_LENGHT_MESSAGE"
-        >
-        </v-textarea>
+            >
+            </v-textarea>
+        </div>
 
-        <div class="params" v-if="btnShowParams.showParameters">
-            <h3>Записка самоуничтожится</h3>
-            <v-row class="mb-1">
-                <v-col>
-                    <v-select
+        <div class="row">
+            <div class="column" v-if="btnShowParams.showParameters">
+                <h3>Записка самоуничтожится</h3>
+                <div class="row align-center justify-center text-center">
+                    <div class="col-md-6 col-xl-6">
+                        <v-select
                             :items="dropDownMenu.dueDateItems"
                             v-model="dropDownMenu.model"
                             outlined
-                    ></v-select>
-                </v-col>
-                <v-col
-                        align="center"
-                        justify="center"
-                >
-                    <v-checkbox
+                        ></v-select>
+                    </div>
+                    <div class="col-md-6 col-xl-6">
+                        <v-checkbox
                             v-model="notAskConfirmation"
                             label="Не спрашивать подтверждение перед тем, как показать и уничтожить записку."
-                    ></v-checkbox>
-                </v-col>
-            </v-row>
-            <h3>Секретный пароль</h3>
-            <v-row>
-                <v-col>
-                    <v-text-field
+                        ></v-checkbox>
+                    </div>
+                </div>
+                <h3>Секретный пароль</h3>
+                <div class="row align-center justify-center">
+                    <div class="col-md-6 col-xl-6">
+                        <v-text-field
                             label="Введите пароль для дешифрования записки"
                             type="password"
                             outlined
@@ -47,10 +47,10 @@
                             @blur="$v.decryptionPassword.$touch()"
                             @input="$v.decryptionPassword.$touch()"
                             :error-messages="decryptionPasswordErrors"
-                    ></v-text-field>
-                </v-col>
-                <v-col>
-                    <v-text-field
+                        ></v-text-field>
+                    </div>
+                    <div class="col-md-6 col-xl-6">
+                        <v-text-field
                             label="Повторите пароль"
                             type="password"
                             outlined
@@ -59,22 +59,24 @@
                             @blur="$v.secondDecryptionPassword.$touch()"
                             @input="$v.secondDecryptionPassword.$touch()"
                             :error-messages="secondDecryptionPasswordErrors"
-                    ></v-text-field>
-                </v-col>
-            </v-row>
+                        ></v-text-field>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="buttons">
+
+        <div class="buttons row">
             <v-btn
                     large
                     color="#960000"
-                    class="btn-create"
+                    class="btn-create col-md-4 col-xl-4 my-2"
                     type="submit"
             >Создать записку</v-btn>
             <v-btn
                     large
                     color="#D5D5D5"
-                    class="btn-params"
+                    class="btn-params col-md-4 col-xl-4 my-2"
                     @click="btnClickShowParams"
             >{{ btnShowParams.showParameters ? 'Отключить параметры' : 'Показать параметры' }}</v-btn>
         </div>
